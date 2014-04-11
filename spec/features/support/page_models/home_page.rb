@@ -16,6 +16,10 @@ module PageModels
       element :description , ".description"
       element :project     , ".project"
       element :edit_button , ".edit"
+
+      def upvote!
+        upvote_image.click
+      end
     end
 
     class IdeasList < SitePrism::Section

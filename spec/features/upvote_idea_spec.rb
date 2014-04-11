@@ -2,22 +2,20 @@ require 'features/features_helper'
 
 feature "Upvoting an idea increases the votes", :js do
 
-  let!(:ideas) { create_list(:idea, 10, :with_project) }
+  let!(:idea) { create(:idea) }
 
   before do
     log_me_in
+    @current_page = PageModels.landing_page
+    @current_page.load
   end
   
-  scenario "Clicking on an upvote button" do
-    visit "/"
+  subject { @current_page.idea_list.idea_items.first }
 
-    first(".upvote img").click
+  before { subject.upvote! }
 
-    expect(first(".votes")).to have_content "1"
-
-    first(".upvote img").click
-
-    expect(first(".votes")).to have_content "2"
-
+  it "shows the updated vote count" do
+    expect(subject.vote_count).to have_content '1'
   end
+
 end
